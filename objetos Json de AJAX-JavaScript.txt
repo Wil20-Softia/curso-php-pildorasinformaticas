@@ -1,0 +1,36 @@
+CODIGO EN PHP:
+
+//Cuando es de una sola casilla de busqueda.
+$el_usuario=isset($_GET['busqueda']) ? $_GET['busqueda'] : $_POST['busqueda'];
+
+$el_array = new stdClass();
+
+if($el_usuario=="Wilson"){
+	$el_array->Nombre="Wilson";
+	$el_array->Apellido="Escalona";
+	$el_array->Cedula="26784724";
+	$json = json_encode($el_array);
+	echo $json;
+}
+
+CODIGO EN JAVASCRIP AJAX-JSON:
+
+$(document).ready(function(){
+	$("#formulario").submit(function(){
+
+		//Para evitar crear tantas variables, se utiliza este codigo.
+		var datosFormulario=$(this).serialize();
+	
+		//Se le envio la peticion de los datos al servidor de tipo JSON
+		$.getJSON("login.php",datosFormulario,procesarDatos).error("ProcesarError");
+
+		//Para que no se recargue en una pagina nueva, y cumpla solo el codigo de arriba.
+		return false;
+	});
+
+
+	//crear la funcion procesarDatos con un argumento que son los datos devueltos.
+	function procesarDatos(respuesta){
+		$.("#contenidos_externos").html(respuesta.Edad);
+	}
+});

@@ -1,0 +1,41 @@
+$.get(url,datos_enviar,funcion_procesa_respuesta)
+$.post(url,datos_enviar,funcion_procesa_respuesta)
+
+ejemplo practico:
+
+$(document).ready(function(){
+	$("#formulario").submit(function(){
+
+		//crear un literal o paquete
+
+		var datosFormulario={
+			usuario:$("#usuario").val(),
+			contra:$("#contra").val()
+		}
+
+		//Para evitar crear tantas variables, se utiliza este codigo.
+		var datosFormulario=$(this).serialize();
+	
+		//Se le envio la peticion de los datos al servidor
+		$.get("login.php",datosFormulario,procesarDatos).error("ProcesarError");
+
+		//Para que no se recargue en una pagina nueva, y cumpla solo el codigo de arriba.
+		return false;
+	});
+
+
+	//crear la funcion procesarDatos con un argumento que son los datos devueltos.
+	function procesarDatos(respuesta){
+		if(respuesta=="autorizado"){
+			$.("#contenidos_externos").html("<p>BIENVENIDO DE NUEVO</p>");
+		}else{
+			$.("#contenidos_externos").html("<p>USUARIO NO AUTORIZADO</p>");
+		}
+	}
+
+	//Esta va a mandar un mensaje de error cuando halla una falla en el Servidor
+	function ProcesarError(){
+		var msgError="Ooops!! A ocurrido un fallo intentalo mas tarde";
+		$.("#contenidos_externos").html("<p>"+ msgError +"</p>");
+	}
+});
